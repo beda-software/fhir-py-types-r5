@@ -6,7 +6,6 @@ from pydantic import (
     BaseModel as BaseModel_,
     ConfigDict,
     Field,
-    Extra,
     field_validator,
     ValidationError,
 )
@@ -14,8 +13,7 @@ from pydantic_core import PydanticCustomError
 
 
 class AnyResource(BaseModel_):
-    class Config:
-        extra = Extra.allow
+    model_config = ConfigDict(extra="allow")
 
     resourceType: str
 
@@ -23,7 +21,7 @@ class AnyResource(BaseModel_):
 class BaseModel(BaseModel_):
     model_config = ConfigDict(
         # Extra attributes are disabled because fhir does not allow it
-        extra=Extra.forbid,
+        extra="forbid",
 
         # Validation are applied while mutating the resource
         validate_assignment=True,
@@ -2891,7 +2889,7 @@ class SimpleQuantity(BaseModel):
     'A computer processable form of the unit in some unit representation system.'
 
 
-class Resource(BaseModel):
+class Resource(AnyResource, BaseModel):
     """This is the base resource type for everything."""
     resourceType: Literal_['Resource'] = 'Resource'
     'Base Resource'
@@ -3045,7 +3043,7 @@ class AccountBalance(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class Account(BaseModel):
+class Account(AnyResource, BaseModel):
     """A financial tool for tracking value accrued for a particular purpose.  In the healthcare field, used to track charges for a patient, cost centers, etc."""
     resourceType: Literal_['Account'] = 'Account'
     'Tracks balance, charges, for patient or cost center'
@@ -3159,7 +3157,7 @@ class ActivityDefinitionParticipant(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class ActivityDefinition(BaseModel):
+class ActivityDefinition(AnyResource, BaseModel):
     """This resource allows for the definition of some activity to be performed, independent of a particular patient, practitioner, or other performance context."""
     resourceType: Literal_['ActivityDefinition'] = 'ActivityDefinition'
     'The definition of a specific activity to be taken, independent of any particular patient or context'
@@ -3359,7 +3357,7 @@ class ActivityDefinition(BaseModel):
     'Detailed description of the type of activity; e.g. What lab test, what procedure, what kind of encounter.'
 
 
-class ActorDefinition(BaseModel):
+class ActorDefinition(AnyResource, BaseModel):
     """Describes an actor - a human or an application that plays a role in data exchange, and that may have obligations associated with the role the actor plays."""
     resourceType: Literal_['ActorDefinition'] = 'ActorDefinition'
     'An application that exchanges data'
@@ -3567,7 +3565,7 @@ class AdministrableProductDefinitionProperty(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class AdministrableProductDefinition(BaseModel):
+class AdministrableProductDefinition(AnyResource, BaseModel):
     """A medicinal product in the final form which is suitable for administering to a patient (after any mixing of multiple components, dissolution etc. has been performed)."""
     resourceType: Literal_['AdministrableProductDefinition'] = 'AdministrableProductDefinition'
     'A medicinal product in the final form, suitable for administration - after any mixing of multiple components'
@@ -3737,7 +3735,7 @@ class AdverseEventParticipant(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class AdverseEvent(BaseModel):
+class AdverseEvent(AnyResource, BaseModel):
     """An event (i.e. any change to current patient status) that may be related to unintended effects on a patient or research participant. The unintended effects may require additional monitoring, treatment, hospitalization, or may result in death. The AdverseEvent resource also extends to potential or avoided events that could have had such effects. There are two major domains where the AdverseEvent resource is expected to be used. One is in clinical care reported adverse events and the other is in reporting adverse events in clinical  research trial management. Adverse events can be reported by healthcare providers, patients, caregivers or by medical products manufacturers. Given the differences between these two concepts, we recommend consulting the domain specific implementation guides when implementing the AdverseEvent Resource. The implementation guides include specific extensions, value sets and constraints."""
     resourceType: Literal_['AdverseEvent'] = 'AdverseEvent'
     'An event that may be related to unintended effects on a patient or research participant'
@@ -3877,7 +3875,7 @@ class AllergyIntoleranceReaction(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class AllergyIntolerance(BaseModel):
+class AllergyIntolerance(AnyResource, BaseModel):
     """Risk of harmful or undesirable physiological response which is specific to an individual and associated with exposure to a substance."""
     resourceType: Literal_['AllergyIntolerance'] = 'AllergyIntolerance'
     'Allergy or Intolerance (generally: Risk of adverse reaction to a substance)'
@@ -4107,7 +4105,7 @@ class AppointmentParticipant(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class Appointment(BaseModel):
+class Appointment(AnyResource, BaseModel):
     """A booking of a healthcare event among patient(s), practitioner(s), related person(s) and/or device(s) for a specific date/time. This may result in one or more Encounter(s)."""
     resourceType: Literal_['Appointment'] = 'Appointment'
     'A booking of a healthcare event among patient(s), practitioner(s), related person(s) and/or device(s) for a specific date/time. This may result in one or more Encounter(s)'
@@ -4217,7 +4215,7 @@ class Appointment(BaseModel):
     'The originating appointment in a recurring set of related appointments.'
 
 
-class AppointmentResponse(BaseModel):
+class AppointmentResponse(AnyResource, BaseModel):
     """A reply to an appointment request for a patient and/or practitioner(s), such as a confirmation or rejection."""
     resourceType: Literal_['AppointmentResponse'] = 'AppointmentResponse'
     'A reply to an appointment request for a patient and/or practitioner(s), such as a confirmation or rejection'
@@ -4325,7 +4323,7 @@ class ArtifactAssessmentContent(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class ArtifactAssessment(BaseModel):
+class ArtifactAssessment(AnyResource, BaseModel):
     """This Resource provides one or more comments, classifiers or ratings about a Resource and supports attribution and rights management metadata for the added content."""
     resourceType: Literal_['ArtifactAssessment'] = 'ArtifactAssessment'
     'Adds metadata-supported comments, classifiers or ratings related to a Resource'
@@ -4549,7 +4547,7 @@ class AuditEventAgent(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class AuditEvent(BaseModel):
+class AuditEvent(AnyResource, BaseModel):
     """A record of an event relevant for purposes such as operations, privacy, security, maintenance, and performance analysis."""
     resourceType: Literal_['AuditEvent'] = 'AuditEvent'
     'Record of an event'
@@ -4615,7 +4613,7 @@ class AuditEvent(BaseModel):
     'Describes what happened. The most specific code for the event.'
 
 
-class Basic(BaseModel):
+class Basic(AnyResource, BaseModel):
     """Basic is used for handling concepts not yet defined in FHIR, narrative-only resources that don't map to an existing resource, and custom resources not appropriate for inclusion in the FHIR specification."""
     resourceType: Literal_['Basic'] = 'Basic'
     'Resource for non-supported content'
@@ -4655,7 +4653,7 @@ class Basic(BaseModel):
     "Identifies the 'type' of resource - equivalent to the resource name for other resources."
 
 
-class Binary(BaseModel):
+class Binary(AnyResource, BaseModel):
     """A resource that represents the data of a single raw artifact as digital content accessible in its native format.  A Binary resource can contain any content, whether text, image, pdf, zip archive, etc."""
     resourceType: Literal_['Binary'] = 'Binary'
     'Pure binary content defined by a format other than FHIR'
@@ -4745,7 +4743,7 @@ class BiologicallyDerivedProductProperty(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class BiologicallyDerivedProduct(BaseModel):
+class BiologicallyDerivedProduct(AnyResource, BaseModel):
     """This resource reflects an instance of a biologically derived product. A material substance originating from a biological entity intended to be transplanted or infused
 into another (possibly the same) biological entity."""
     resourceType: Literal_['BiologicallyDerivedProduct'] = 'BiologicallyDerivedProduct'
@@ -4820,7 +4818,7 @@ class BiologicallyDerivedProductDispensePerformer(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class BiologicallyDerivedProductDispense(BaseModel):
+class BiologicallyDerivedProductDispense(AnyResource, BaseModel):
     """This resource reflects an instance of a biologically derived product dispense. The supply or dispense of a biologically derived product from the supply organization or department (e.g. hospital transfusion laboratory) to the clinical team responsible for clinical application."""
     resourceType: Literal_['BiologicallyDerivedProductDispense'] = 'BiologicallyDerivedProductDispense'
     'A record of dispensation of a biologically derived product'
@@ -4946,7 +4944,7 @@ class BodyStructureIncludedStructureBodyLandmarkOrientationDistanceFromLandmark(
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class BodyStructure(BaseModel):
+class BodyStructure(AnyResource, BaseModel):
     """Record details about an anatomical structure.  This resource may be used when a coded concept does not provide the necessary detail needed for the use case."""
     resourceType: Literal_['BodyStructure'] = 'BodyStructure'
     'Specific and identified anatomical structure'
@@ -5126,7 +5124,7 @@ class BundleLink(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class Bundle(BaseModel):
+class Bundle(AnyResource, BaseModel):
     """A container for a collection of resources."""
     resourceType: Literal_['Bundle'] = 'Bundle'
     'Contains a collection of resources'
@@ -5168,7 +5166,7 @@ class Bundle(BaseModel):
     'A reference to a set of rules that were followed when the resource was constructed, and which must be understood when processing the content. Often, this is a reference to an implementation guide that defines the special rules along with other profiles etc.'
 
 
-class CanonicalResource(BaseModel):
+class CanonicalResource(AnyResource, BaseModel):
     """Common Interface declaration for conformance and knowledge artifact resources."""
     resourceType: Literal_['CanonicalResource'] = 'CanonicalResource'
     'Common Interface declaration for definitional resources'
@@ -5616,7 +5614,7 @@ class CapabilityStatementRestSecurity(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class CapabilityStatement(BaseModel):
+class CapabilityStatement(AnyResource, BaseModel):
     """A Capability Statement documents a set of capabilities (behaviors) of a FHIR Server or Client for a particular version of FHIR that may be used as a statement of actual server functionality or a statement of required or desired server implementation."""
     resourceType: Literal_['CapabilityStatement'] = 'CapabilityStatement'
     'A statement of system capabilities'
@@ -5766,7 +5764,7 @@ class CarePlanActivity(BaseModel):
     'The details of the proposed activity represented in a specific resource.'
 
 
-class CarePlan(BaseModel):
+class CarePlan(AnyResource, BaseModel):
     """Describes the intention of how one or more practitioners intend to deliver care for a particular patient, group or community for a period of time, possibly limited to care for a specific condition or set of conditions."""
     resourceType: Literal_['CarePlan'] = 'CarePlan'
     'Healthcare plan for patient or group'
@@ -5876,7 +5874,7 @@ class CareTeamParticipant(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class CareTeam(BaseModel):
+class CareTeam(AnyResource, BaseModel):
     """The Care Team includes all the people and organizations who plan to participate in the coordination and delivery of care."""
     resourceType: Literal_['CareTeam'] = 'CareTeam'
     'Planned participants in the coordination and delivery of care'
@@ -5946,7 +5944,7 @@ class ChargeItemPerformer(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class ChargeItem(BaseModel):
+class ChargeItem(AnyResource, BaseModel):
     """The resource ChargeItem describes the provision of healthcare provider products for a certain patient, therefore referring not only to the product, but containing in addition details of the provision, like date, time, amounts and participating organizations and persons. Main Usage of the ChargeItem is to enable the billing process and internal cost allocation."""
     resourceType: Literal_['ChargeItem'] = 'ChargeItem'
     'Item containing charge code(s) associated with the provision of healthcare provider products'
@@ -6074,7 +6072,7 @@ class ChargeItemDefinitionApplicability(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class ChargeItemDefinition(BaseModel):
+class ChargeItemDefinition(AnyResource, BaseModel):
     """The ChargeItemDefinition resource provides the properties that apply to the (billing) codes necessary to calculate costs and prices. The properties may differ largely depending on type and realm, therefore this resource gives only a rough structure and requires profiling for each type of billing code system."""
     resourceType: Literal_['ChargeItemDefinition'] = 'ChargeItemDefinition'
     'Definition of properties and rules about how the price and the applicability of a ChargeItem can be determined'
@@ -6652,7 +6650,7 @@ class CitationSummary(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class Citation(BaseModel):
+class Citation(AnyResource, BaseModel):
     """The Citation Resource enables reference to any knowledge artifact for purposes of identification and attribution. The Citation Resource supports existing reference structures and developing publication practices such as versioning, expressing complex contributorship roles, and referencing computable resources."""
     resourceType: Literal_['Citation'] = 'Citation'
     'A description of identification, location, or contributorship of a publication (article or artifact)'
@@ -7198,7 +7196,7 @@ class ClaimItemDetailSubDetail(BaseModel):
     'This contains the end of a range of product, service, drug or other billing codes for the item. This element is not used when the .productOrService is a group code. This value may only be present when a .productOfService code has been provided to convey the start of the range. Typically this value may be used only with preauthorizations and not with claims.'
 
 
-class Claim(BaseModel):
+class Claim(AnyResource, BaseModel):
     """A provider issued list of professional services and products which have been provided, or are to be provided, to a patient which is sent to an insurer for reimbursement."""
     resourceType: Literal_['Claim'] = 'Claim'
     'Claim, Pre-determination or Pre-authorization'
@@ -7742,7 +7740,7 @@ class ClaimResponseItemDetailSubDetail(BaseModel):
     'A number to uniquely reference the claim sub-detail entry.'
 
 
-class ClaimResponse(BaseModel):
+class ClaimResponse(AnyResource, BaseModel):
     """This resource provides the adjudication details from the processing of a Claim resource."""
     resourceType: Literal_['ClaimResponse'] = 'ClaimResponse'
     'Response to a claim predetermination or preauthorization'
@@ -7864,7 +7862,7 @@ class ClinicalImpressionFinding(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class ClinicalImpression(BaseModel):
+class ClinicalImpression(AnyResource, BaseModel):
     """A record of a clinical assessment performed to determine what problem(s) may affect the patient and before planning the treatments or management strategies that are best to manage a patient's condition. Assessments are often 1:1 with a clinical consultation / encounter,  but this varies greatly depending on the clinical workflow. This resource is called "ClinicalImpression" rather than "ClinicalAssessment" to avoid confusion with the recording of assessment tools such as Apgar score."""
     resourceType: Literal_['ClinicalImpression'] = 'ClinicalImpression'
     'A clinical assessment performed when planning treatments and management strategies for a patient'
@@ -8090,7 +8088,7 @@ class ClinicalUseDefinitionWarning(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class ClinicalUseDefinition(BaseModel):
+class ClinicalUseDefinition(AnyResource, BaseModel):
     """A single issue - either an indication, contraindication, interaction or an undesirable effect for a medicinal product, medication, device or procedure."""
     resourceType: Literal_['ClinicalUseDefinition'] = 'ClinicalUseDefinition'
     'A single issue - either an indication, contraindication, interaction or an undesirable effect for a medicinal product, medication, device or procedure'
@@ -8298,7 +8296,7 @@ class CodeSystemFilter(BaseModel):
     'The code that identifies this filter when it is used as a filter in [ValueSet](valueset.html#).compose.include.filter.'
 
 
-class CodeSystem(BaseModel):
+class CodeSystem(AnyResource, BaseModel):
     """The CodeSystem resource is used to declare the existence of and describe a code system or code system supplement and its key properties, and optionally define a part or all of its content."""
     resourceType: Literal_['CodeSystem'] = 'CodeSystem'
     'Declares the existence of and describes a code system or code system supplement'
@@ -8466,7 +8464,7 @@ class CommunicationPayload(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class Communication(BaseModel):
+class Communication(AnyResource, BaseModel):
     """A clinical or business level record of information being transmitted or shared; e.g. an alert that was sent to a responsible provider, a public health agency communication to a provider/reporter in response to a case report for a reportable condition."""
     resourceType: Literal_['Communication'] = 'Communication'
     'A clinical or business level record of information being transmitted or shared'
@@ -8568,7 +8566,7 @@ class CommunicationRequestPayload(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class CommunicationRequest(BaseModel):
+class CommunicationRequest(AnyResource, BaseModel):
     """A request to convey information; e.g. the CDS system proposes that an alert be sent to a responsible provider, the CDS system proposes that the public health agency be notified about a reportable condition."""
     resourceType: Literal_['CommunicationRequest'] = 'CommunicationRequest'
     'A request for information to be sent to a receiver'
@@ -8686,7 +8684,7 @@ class CompartmentDefinitionResource(BaseModel):
     'The name of a resource supported by the server.'
 
 
-class CompartmentDefinition(BaseModel):
+class CompartmentDefinition(AnyResource, BaseModel):
     """A compartment definition that defines how resources are accessed on a server."""
     resourceType: Literal_['CompartmentDefinition'] = 'CompartmentDefinition'
     'Compartment Definition for a resource'
@@ -8842,7 +8840,7 @@ class CompositionEvent(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class Composition(BaseModel):
+class Composition(AnyResource, BaseModel):
     """A set of healthcare-related information that is assembled together into a single logical package that provides a single coherent statement of meaning, establishes its own context and that has clinical attestation with regard to who is making the statement. A Composition defines the structure and narrative content necessary for a document. However, a Composition alone does not constitute a document. Rather, the Composition must be the first entry in a Bundle where Bundle.type=document, and any other resources referenced from Composition must be included as subsequent entries in the Bundle (for example Patient, Practitioner, Encounter, etc.)."""
     resourceType: Literal_['Composition'] = 'Composition'
     'A set of resources composed into a single coherent clinical statement with clinical attestation'
@@ -9186,7 +9184,7 @@ class ConceptMapGroupElementTargetProperty(BaseModel):
     'A reference to a mapping property defined in ConceptMap.property.'
 
 
-class ConceptMap(BaseModel):
+class ConceptMap(AnyResource, BaseModel):
     """A statement of relationships from one set of concepts to one or more other concepts - either concepts in code systems, or data element/data element concepts, or classes in class models."""
     resourceType: Literal_['ConceptMap'] = 'ConceptMap'
     'A map from one set of concepts to one or more other concepts'
@@ -9354,7 +9352,7 @@ class ConditionStage(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class Condition(BaseModel):
+class Condition(AnyResource, BaseModel):
     """A clinical condition, problem, diagnosis, or other event, situation, issue, or clinical concept that has risen to a level of concern."""
     resourceType: Literal_['Condition'] = 'Condition'
     'Detailed information about conditions, problems or diagnoses'
@@ -9528,7 +9526,7 @@ class ConditionDefinitionPlan(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class ConditionDefinition(BaseModel):
+class ConditionDefinition(AnyResource, BaseModel):
     """A definition of a condition and information relevant to managing it."""
     resourceType: Literal_['ConditionDefinition'] = 'ConditionDefinition'
     'A definition of a condition'
@@ -9760,7 +9758,7 @@ class ConsentProvisionData(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class Consent(BaseModel):
+class Consent(AnyResource, BaseModel):
     """A record of a healthcare consumer’s  choices  or choices made on their behalf by a third party, which permits or denies identified recipient(s) or recipient role(s) to perform one or more actions within a given policy context, for specific purposes and periods of time."""
     resourceType: Literal_['Consent'] = 'Consent'
     "A healthcare consumer's  or third party's choices to permit or deny recipients or roles to perform actions for specific purposes and periods of time"
@@ -10308,7 +10306,7 @@ class ContractTermOfferParty(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class Contract(BaseModel):
+class Contract(AnyResource, BaseModel):
     """Legally enforceable, formally recorded unilateral or bilateral directive i.e., a policy or agreement."""
     resourceType: Literal_['Contract'] = 'Contract'
     'Legal Agreement'
@@ -10506,7 +10504,7 @@ class CoverageClass(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class Coverage(BaseModel):
+class Coverage(AnyResource, BaseModel):
     """Financial instrument which may be used to reimburse or pay for health care products and services. Includes both insurance and self-payment."""
     resourceType: Literal_['Coverage'] = 'Coverage'
     'Insurance or medical plan or a payment agreement'
@@ -10700,7 +10698,7 @@ class CoverageEligibilityRequestItemDiagnosis(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class CoverageEligibilityRequest(BaseModel):
+class CoverageEligibilityRequest(AnyResource, BaseModel):
     """The CoverageEligibilityRequest provides patient and insurance coverage information to an insurer for them to respond, in the form of an CoverageEligibilityResponse, with information regarding whether the stated coverage is valid and in-force and optionally to provide the insurance details of the policy."""
     resourceType: Literal_['CoverageEligibilityRequest'] = 'CoverageEligibilityRequest'
     'CoverageEligibilityRequest resource'
@@ -10912,7 +10910,7 @@ class CoverageEligibilityResponseEvent(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class CoverageEligibilityResponse(BaseModel):
+class CoverageEligibilityResponse(AnyResource, BaseModel):
     """This resource provides eligibility and plan details from the processing of an CoverageEligibilityRequest resource."""
     resourceType: Literal_['CoverageEligibilityResponse'] = 'CoverageEligibilityResponse'
     'CoverageEligibilityResponse resource'
@@ -11026,7 +11024,7 @@ class DetectedIssueEvidence(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class DetectedIssue(BaseModel):
+class DetectedIssue(AnyResource, BaseModel):
     """Indicates an actual or potential clinical issue with or between one or more active or proposed clinical actions for a patient; e.g. Drug-drug interaction, Ineffective treatment frequency, Procedure-condition conflict, gaps in care, etc."""
     resourceType: Literal_['DetectedIssue'] = 'DetectedIssue'
     'Clinical issue with action'
@@ -11232,7 +11230,7 @@ class DeviceName(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class Device(BaseModel):
+class Device(AnyResource, BaseModel):
     """A type of a manufactured item that is used in the provision of healthcare without being substantially changed through that activity. The device may be a medical or non-medical device."""
     resourceType: Literal_['Device'] = 'Device'
     'Item used in healthcare'
@@ -11362,7 +11360,7 @@ class DeviceAssociationOperation(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class DeviceAssociation(BaseModel):
+class DeviceAssociation(AnyResource, BaseModel):
     """A record of association or dissociation of a device with a patient."""
     resourceType: Literal_['DeviceAssociation'] = 'DeviceAssociation'
     'A record of association or dissociation of a device with a patient'
@@ -11764,7 +11762,7 @@ class DeviceDefinitionLink(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class DeviceDefinition(BaseModel):
+class DeviceDefinition(AnyResource, BaseModel):
     """The characteristics, operational status and capabilities of a medical-related component of a medical device."""
     resourceType: Literal_['DeviceDefinition'] = 'DeviceDefinition'
     'An instance of a medical-related component of a medical device'
@@ -11868,7 +11866,7 @@ class DeviceDispensePerformer(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class DeviceDispense(BaseModel):
+class DeviceDispense(AnyResource, BaseModel):
     """A record of dispensation of a device - i.e., assigning a device to a patient, or to a professional for their use."""
     resourceType: Literal_['DeviceDispense'] = 'DeviceDispense'
     'A record of dispensation of a device'
@@ -11970,7 +11968,7 @@ class DeviceMetricCalibration(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class DeviceMetric(BaseModel):
+class DeviceMetric(AnyResource, BaseModel):
     """Describes a measurement, calculation or setting capability of a device."""
     resourceType: Literal_['DeviceMetric'] = 'DeviceMetric'
     'Measurement, calculation or setting capability of a medical device'
@@ -12046,7 +12044,7 @@ class DeviceRequestParameter(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class DeviceRequest(BaseModel):
+class DeviceRequest(AnyResource, BaseModel):
     """Represents a request for a patient to employ a medical device. The device may be an implantable device, or an external assistive device, such as a walker."""
     resourceType: Literal_['DeviceRequest'] = 'DeviceRequest'
     'Medical device request'
@@ -12166,7 +12164,7 @@ class DeviceUsageAdherence(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class DeviceUsage(BaseModel):
+class DeviceUsage(AnyResource, BaseModel):
     """A record of a device being used by a patient where the record is the result of a report from the patient or a clinician."""
     resourceType: Literal_['DeviceUsage'] = 'DeviceUsage'
     'Record of use of a device'
@@ -12272,7 +12270,7 @@ class DiagnosticReportMedia(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class DiagnosticReport(BaseModel):
+class DiagnosticReport(AnyResource, BaseModel):
     """The findings and interpretation of diagnostic tests performed on patients, groups of patients, products, substances, devices, and locations, and/or specimens derived from these. The report includes clinical context such as requesting provider information, and some mix of atomic results, images, textual and coded interpretations, and formatted representation of diagnostic reports. The report also includes non-clinical context such as batch analysis and stability reporting of products and substances."""
     resourceType: Literal_['DiagnosticReport'] = 'DiagnosticReport'
     'A Diagnostic report - a combination of request information, atomic results, images, interpretation, as well as formatted reports'
@@ -12426,7 +12424,7 @@ class DocumentReferenceContentProfile(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class DocumentReference(BaseModel):
+class DocumentReference(AnyResource, BaseModel):
     """A reference to a document of any kind for any purpose. While the term “document” implies a more narrow focus, for this resource this "document" encompasses *any* serialized object with a mime-type, it includes formal patient-centric documents (CDA), clinical notes, scanned paper, non-patient specific documents like policy text, as well as a photo, video, or audio recording acquired or used in healthcare.  The DocumentReference resource provides metadata about the document so that the document can be discovered and managed.  The actual content may be inline base64 encoded data or provided by direct reference."""
     resourceType: Literal_['DocumentReference'] = 'DocumentReference'
     'A reference to a document'
@@ -12510,7 +12508,7 @@ class DocumentReference(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the resource and that modifies the understanding of the element that contains it and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer is allowed to define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class DomainResource(BaseModel):
+class DomainResource(AnyResource, BaseModel):
     """A resource that includes narrative, extensions, and contained resources."""
     resourceType: Literal_['DomainResource'] = 'DomainResource'
     'A resource with narrative, extensions, and contained resources'
@@ -12634,7 +12632,7 @@ class EncounterReason(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class Encounter(BaseModel):
+class Encounter(AnyResource, BaseModel):
     """An interaction between a patient and healthcare provider(s) for the purpose of providing healthcare service(s) or assessing the health status of a patient.  Encounter is primarily used to record information about the actual activities that occurred, where Appointment is used to record planned activities."""
     resourceType: Literal_['Encounter'] = 'Encounter'
     'An interaction during which services are provided to the patient'
@@ -12740,7 +12738,7 @@ class EncounterHistoryLocation(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class EncounterHistory(BaseModel):
+class EncounterHistory(AnyResource, BaseModel):
     """A record of significant events/milestones key data throughout the history of an Encounter, often tracked for specific purposes such as billing."""
     resourceType: Literal_['EncounterHistory'] = 'EncounterHistory'
     'A record of significant events/milestones key data throughout the history of an Encounter'
@@ -12818,7 +12816,7 @@ class EndpointPayload(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class Endpoint(BaseModel):
+class Endpoint(AnyResource, BaseModel):
     """The technical details of an endpoint that can be used for electronic services, such as for web services providing XDS.b, a REST endpoint for another FHIR server, or a s/Mime email address. This may include any security context information."""
     resourceType: Literal_['Endpoint'] = 'Endpoint'
     'The technical details of an endpoint that can be used for electronic services'
@@ -12880,7 +12878,7 @@ class Endpoint(BaseModel):
     'The organization that manages this endpoint (even if technically another organization is hosting this in the cloud, it is the organization associated with the data).'
 
 
-class EnrollmentRequest(BaseModel):
+class EnrollmentRequest(AnyResource, BaseModel):
     """This resource provides the insurance enrollment details to the insurer regarding a specified coverage."""
     resourceType: Literal_['EnrollmentRequest'] = 'EnrollmentRequest'
     'Enroll in coverage'
@@ -12926,7 +12924,7 @@ class EnrollmentRequest(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the resource and that modifies the understanding of the element that contains it and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer is allowed to define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class EnrollmentResponse(BaseModel):
+class EnrollmentResponse(AnyResource, BaseModel):
     """This resource provides enrollment and plan details from the processing of an EnrollmentRequest resource."""
     resourceType: Literal_['EnrollmentResponse'] = 'EnrollmentResponse'
     'EnrollmentResponse resource'
@@ -13028,7 +13026,7 @@ class EpisodeOfCareReason(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class EpisodeOfCare(BaseModel):
+class EpisodeOfCare(AnyResource, BaseModel):
     """An association between a patient and an organization / healthcare provider(s) during which time encounters may occur. The managing organization assumes a level of responsibility for the patient during this time."""
     resourceType: Literal_['EpisodeOfCare'] = 'EpisodeOfCare'
     'An association of a Patient with an Organization and  Healthcare Provider(s) for a period of time that the Organization assumes some level of responsibility'
@@ -13084,7 +13082,7 @@ class EpisodeOfCare(BaseModel):
     'The organization that has assumed the specific responsibilities for care coordination, care delivery, or other services for the specified duration.'
 
 
-class EventDefinition(BaseModel):
+class EventDefinition(AnyResource, BaseModel):
     """The EventDefinition resource provides a reusable description of when a particular event can occur."""
     resourceType: Literal_['EventDefinition'] = 'EventDefinition'
     'A description of when an event can occur'
@@ -13406,7 +13404,7 @@ class EvidenceStatisticSampleSize(BaseModel):
     'A human-readable string to clarify or explain concepts about the sample size.'
 
 
-class Evidence(BaseModel):
+class Evidence(AnyResource, BaseModel):
     """The Evidence Resource provides a machine-interpretable expression of an evidence concept including the evidence variables (e.g., population, exposures/interventions, comparators, outcomes, measured variables, confounding variables), the statistics, and the certainty of this evidence."""
     resourceType: Literal_['Evidence'] = 'Evidence'
     'Single evidence bit'
@@ -13664,7 +13662,7 @@ class EvidenceReportSubjectCharacteristic(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class EvidenceReport(BaseModel):
+class EvidenceReport(AnyResource, BaseModel):
     """The EvidenceReport Resource is a specialized container for a collection of resources and codeable concepts, adapted to support compositions of Evidence, EvidenceVariable, and Citation resources and related concepts."""
     resourceType: Literal_['EvidenceReport'] = 'EvidenceReport'
     'A EvidenceReport'
@@ -13906,7 +13904,7 @@ class EvidenceVariableCategory(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class EvidenceVariable(BaseModel):
+class EvidenceVariable(AnyResource, BaseModel):
     """The EvidenceVariable resource describes an element that knowledge (Evidence) is about."""
     resourceType: Literal_['EvidenceVariable'] = 'EvidenceVariable'
     'A definition of an exposure, outcome, or other variable'
@@ -14274,7 +14272,7 @@ class ExampleScenarioActor(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class ExampleScenario(BaseModel):
+class ExampleScenario(AnyResource, BaseModel):
     """Example of workflow instance."""
     resourceType: Literal_['ExampleScenario'] = 'ExampleScenario'
     'Example of workflow instance'
@@ -15162,7 +15160,7 @@ class ExplanationOfBenefitItemDetailSubDetail(BaseModel):
     'This contains the end of a range of product, service, drug or other billing codes for the item. This element is not used when the .productOrService is a group code. This value may only be present when a .productOfService code has been provided to convey the start of the range. Typically this value may be used only with preauthorizations and not with claims.'
 
 
-class ExplanationOfBenefit(BaseModel):
+class ExplanationOfBenefit(AnyResource, BaseModel):
     """This resource provides: the claim details; adjudication details from the processing of a Claim; and optionally account balance information, for informing the subscriber of the benefits provided."""
     resourceType: Literal_['ExplanationOfBenefit'] = 'ExplanationOfBenefit'
     'Explanation of Benefit resource'
@@ -15386,7 +15384,7 @@ class FamilyMemberHistoryCondition(BaseModel):
     'This condition contributed to the cause of death of the related person. If contributedToDeath is not populated, then it is unknown.'
 
 
-class FamilyMemberHistory(BaseModel):
+class FamilyMemberHistory(AnyResource, BaseModel):
     """Significant health conditions for a person related to the patient relevant in the context of care for the patient."""
     resourceType: Literal_['FamilyMemberHistory'] = 'FamilyMemberHistory'
     "Information about patient's relatives, relevant for patient"
@@ -15492,7 +15490,7 @@ class FamilyMemberHistory(BaseModel):
     'The date (and possibly time) when the family member history was recorded or last updated.'
 
 
-class Flag(BaseModel):
+class Flag(AnyResource, BaseModel):
     """Prospective warnings of potential issues when providing care to the patient."""
     resourceType: Literal_['Flag'] = 'Flag'
     'Key information to flag to healthcare providers'
@@ -15538,7 +15536,7 @@ class Flag(BaseModel):
     'The coded value or textual component of the flag to display to the user.'
 
 
-class FormularyItem(BaseModel):
+class FormularyItem(AnyResource, BaseModel):
     """This resource describes a product or service that is available through a program and includes the conditions and constraints of availability.  All of the information in this resource is specific to the inclusion of the item in the formulary and is not inherent to the item itself."""
     resourceType: Literal_['FormularyItem'] = 'FormularyItem'
     'Definition of a FormularyItem'
@@ -15698,7 +15696,7 @@ class GenomicStudyAnalysisInput(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class GenomicStudy(BaseModel):
+class GenomicStudy(AnyResource, BaseModel):
     """A GenomicStudy is a set of analyses performed to analyze and generate genomic data."""
     resourceType: Literal_['GenomicStudy'] = 'GenomicStudy'
     'Genomic Study'
@@ -15806,7 +15804,7 @@ class GoalTarget(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class Goal(BaseModel):
+class Goal(AnyResource, BaseModel):
     """Describes the intended objective(s) for a patient, group or organization care, for example, weight loss, restoring an activity of daily living, obtaining herd immunity via immunization, meeting a process improvement objective, etc."""
     resourceType: Literal_['Goal'] = 'Goal'
     'Describes the intended objective(s) for a patient, group or organization'
@@ -15984,7 +15982,7 @@ class GraphDefinitionNode(BaseModel):
     'Unique id for the element within a resource (for internal references). This may be any string value that does not contain spaces.'
 
 
-class GraphDefinition(BaseModel):
+class GraphDefinition(AnyResource, BaseModel):
     """A formal computable definition of a graph of resources - that is, a coherent set of resources that form a graph by following references. The Graph Definition resource defines a set and makes rules about the set."""
     resourceType: Literal_['GraphDefinition'] = 'GraphDefinition'
     'Definition of a graph of resources'
@@ -16134,7 +16132,7 @@ class GroupMember(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class Group(BaseModel):
+class Group(AnyResource, BaseModel):
     """Represents a defined collection of entities that may be discussed or acted upon collectively but which are not expected to act collectively, and are not formally or legally recognized; i.e. a collection of entities that isn't an Organization."""
     resourceType: Literal_['Group'] = 'Group'
     'Group of multiple entities'
@@ -16196,7 +16194,7 @@ class Group(BaseModel):
     'Provides a specific type of resource the group includes; e.g. "cow", "syringe", etc.'
 
 
-class GuidanceResponse(BaseModel):
+class GuidanceResponse(AnyResource, BaseModel):
     """A guidance response is the formal response to a guidance request, including any output parameters returned by the evaluation, as well as the description of any proposed actions to be taken."""
     resourceType: Literal_['GuidanceResponse'] = 'GuidanceResponse'
     'The formal response to a guidance request'
@@ -16282,7 +16280,7 @@ class HealthcareServiceEligibility(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class HealthcareService(BaseModel):
+class HealthcareService(AnyResource, BaseModel):
     """The details of a healthcare service available at a location."""
     resourceType: Literal_['HealthcareService'] = 'HealthcareService'
     'The details of a healthcare service available at a location'
@@ -16453,7 +16451,7 @@ class ImagingSelectionInstanceImageRegion2D(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class ImagingSelection(BaseModel):
+class ImagingSelection(AnyResource, BaseModel):
     """A selection of DICOM SOP instances and/or frames within a single Study and Series. This might include additional specifics such as an image region, an Observation UID or a Segmentation Number, allowing linkage to an Observation Resource or transferring this information along with the ImagingStudy Resource."""
     resourceType: Literal_['ImagingSelection'] = 'ImagingSelection'
     'A selection of DICOM SOP instances and/or frames'
@@ -16615,7 +16613,7 @@ class ImagingStudySeriesInstance(BaseModel):
     'Unique id for the element within a resource (for internal references). This may be any string value that does not contain spaces.'
 
 
-class ImagingStudy(BaseModel):
+class ImagingStudy(AnyResource, BaseModel):
     """Representation of the content produced in a DICOM imaging study. A study comprises a set of series, each of which includes a set of Service-Object Pair Instances (SOP Instances - images or other data) acquired or produced in a common context.  A series is of only one modality (e.g. X-ray, CT, MR, ultrasound), but a study may have multiple series of different modalities."""
     resourceType: Literal_['ImagingStudy'] = 'ImagingStudy'
     'A set of images produced in single study (one or more series of references images)'
@@ -16771,7 +16769,7 @@ class ImmunizationReaction(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class Immunization(BaseModel):
+class Immunization(AnyResource, BaseModel):
     """Describes the event of a patient being administered a vaccine or a record of an immunization as reported by a patient, a clinician or another party."""
     resourceType: Literal_['Immunization'] = 'Immunization'
     'Immunization event information'
@@ -16871,7 +16869,7 @@ class Immunization(BaseModel):
     'Additional information that is relevant to the immunization (e.g. for a vaccine recipient who is pregnant, the gestational age of the fetus). The reason why a vaccine was given (e.g. occupation, underlying medical condition) should be conveyed in Immunization.reason, not as supporting information. The reason why a vaccine was not given (e.g. contraindication) should be conveyed in Immunization.statusReason, not as supporting information.'
 
 
-class ImmunizationEvaluation(BaseModel):
+class ImmunizationEvaluation(AnyResource, BaseModel):
     """Describes a comparison of an immunization event against published recommendations to determine if the administration is "valid" in relation to those  recommendations."""
     resourceType: Literal_['ImmunizationEvaluation'] = 'ImmunizationEvaluation'
     'Immunization evaluation information'
@@ -16999,7 +16997,7 @@ class ImmunizationRecommendationRecommendationDateCriterion(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class ImmunizationRecommendation(BaseModel):
+class ImmunizationRecommendation(AnyResource, BaseModel):
     """A patient's point-in-time set of recommendations (i.e. forecasting) according to a published schedule with optional supporting justification."""
     resourceType: Literal_['ImmunizationRecommendation'] = 'ImmunizationRecommendation'
     'Guidance or advice relating to an immunization'
@@ -17325,7 +17323,7 @@ class ImplementationGuideGlobal(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class ImplementationGuide(BaseModel):
+class ImplementationGuide(AnyResource, BaseModel):
     """A set of rules of how a particular interoperability or standards problem is solved - typically through the use of FHIR resources. This resource is used to gather all the parts of an implementation guide into a logical whole and to publish a computable definition of all the parts."""
     resourceType: Literal_['ImplementationGuide'] = 'ImplementationGuide'
     'A set of rules about how FHIR is used'
@@ -17541,7 +17539,7 @@ class IngredientSubstanceStrengthReferenceStrength(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class Ingredient(BaseModel):
+class Ingredient(AnyResource, BaseModel):
     """An ingredient of a manufactured item or pharmaceutical product."""
     resourceType: Literal_['Ingredient'] = 'Ingredient'
     'An ingredient of a manufactured item or pharmaceutical product'
@@ -17749,7 +17747,7 @@ class InsurancePlanPlanGeneralCost(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class InsurancePlan(BaseModel):
+class InsurancePlan(AnyResource, BaseModel):
     """Details of a Health Insurance product/plan provided by an organization."""
     resourceType: Literal_['InsurancePlan'] = 'InsurancePlan'
     'Details of a Health Insurance product/plan provided by an organization'
@@ -17965,7 +17963,7 @@ class InventoryItemName(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class InventoryItem(BaseModel):
+class InventoryItem(AnyResource, BaseModel):
     """A functional description of an inventory item used in inventory and supply-related workflows."""
     resourceType: Literal_['InventoryItem'] = 'InventoryItem'
     'A functional description of an inventory item used in inventory and supply-related workflows'
@@ -18063,7 +18061,7 @@ class InventoryReportInventoryListingItem(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class InventoryReport(BaseModel):
+class InventoryReport(AnyResource, BaseModel):
     """A report of inventory or stock items."""
     resourceType: Literal_['InventoryReport'] = 'InventoryReport'
     'A report of inventory or stock items'
@@ -18161,7 +18159,7 @@ class InvoiceLineItem(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class Invoice(BaseModel):
+class Invoice(AnyResource, BaseModel):
     """Invoice containing collected ChargeItems from an Account with calculated individual and total price for Billing purpose."""
     resourceType: Literal_['Invoice'] = 'Invoice'
     'Invoice containing ChargeItems from an Account'
@@ -18239,7 +18237,7 @@ class Invoice(BaseModel):
     'Depricared by the element below.'
 
 
-class Library(BaseModel):
+class Library(AnyResource, BaseModel):
     """The Library resource is a general-purpose container for knowledge asset definitions. It can be used to describe and expose existing knowledge assets such as logic libraries and information model descriptions, as well as to describe a collection of knowledge assets."""
     resourceType: Literal_['Library'] = 'Library'
     'Represents a library of quality improvement components'
@@ -18389,7 +18387,7 @@ class LinkageItem(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class Linkage(BaseModel):
+class Linkage(AnyResource, BaseModel):
     """Identifies two or more records (resource instances) that refer to the same real-world "occurrence"."""
     resourceType: Literal_['Linkage'] = 'Linkage'
     "Links records for 'same' item"
@@ -18449,7 +18447,7 @@ class ListEntry(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class List(BaseModel):
+class List(AnyResource, BaseModel):
     """A List is a curated collection of resources, for things such as problem lists, allergy lists, facility list, organization list, etc."""
     resourceType: Literal_['List'] = 'List'
     'A list is a curated collection of resources'
@@ -18535,7 +18533,7 @@ class LocationPosition(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class Location(BaseModel):
+class Location(AnyResource, BaseModel):
     """Details and position information for a place where services are provided and resources and participants may be stored, found, contained, or accommodated."""
     resourceType: Literal_['Location'] = 'Location'
     'Details and position information for a place'
@@ -18687,7 +18685,7 @@ class ManufacturedItemDefinitionProperty(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class ManufacturedItemDefinition(BaseModel):
+class ManufacturedItemDefinition(AnyResource, BaseModel):
     """The definition and characteristics of a medicinal manufactured item, such as a tablet or capsule, as contained in a packaged medicinal product."""
     resourceType: Literal_['ManufacturedItemDefinition'] = 'ManufacturedItemDefinition'
     'The definition and characteristics of a medicinal manufactured item, such as a tablet or capsule, as contained in a packaged medicinal product'
@@ -18919,7 +18917,7 @@ class MeasureTerm(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class Measure(BaseModel):
+class Measure(AnyResource, BaseModel):
     """The Measure resource provides the definition of a quality measure."""
     resourceType: Literal_['Measure'] = 'Measure'
     'A quality measure definition'
@@ -19277,7 +19275,7 @@ class MeasureReportGroupPopulation(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class MeasureReport(BaseModel):
+class MeasureReport(AnyResource, BaseModel):
     """The MeasureReport resource contains the results of the calculation of a measure; and optionally a reference to the resources involved in that calculation."""
     resourceType: Literal_['MeasureReport'] = 'MeasureReport'
     'Results of a measure evaluation'
@@ -19393,7 +19391,7 @@ class MedicationBatch(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class Medication(BaseModel):
+class Medication(AnyResource, BaseModel):
     """This resource is primarily used for the identification and definition of a medication, including ingredients, for the purposes of prescribing, dispensing, and administering a medication as well as for making statements about medication use."""
     resourceType: Literal_['Medication'] = 'Medication'
     'Definition of a Medication'
@@ -19485,7 +19483,7 @@ class MedicationAdministrationDosage(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class MedicationAdministration(BaseModel):
+class MedicationAdministration(AnyResource, BaseModel):
     """Describes the event of a patient consuming or otherwise being administered a medication.  This may be as simple as swallowing a tablet or it may be a long running infusion.  Related resources tie this event to the authorizing prescription, and the specific encounter between patient and health care practitioner."""
     resourceType: Literal_['MedicationAdministration'] = 'MedicationAdministration'
     'Administration of medication to a patient'
@@ -19605,7 +19603,7 @@ class MedicationDispensePerformer(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class MedicationDispense(BaseModel):
+class MedicationDispense(AnyResource, BaseModel):
     """Indicates that a medication product is to be or has been dispensed for a named person/patient.  This includes a description of the medication product (supply) provided and the instructions for administering the medication.  The medication dispense is the result of a pharmacy system responding to a medication order."""
     resourceType: Literal_['MedicationDispense'] = 'MedicationDispense'
     'Dispensing a medication to a named patient'
@@ -20053,7 +20051,7 @@ class MedicationKnowledgeCost(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class MedicationKnowledge(BaseModel):
+class MedicationKnowledge(AnyResource, BaseModel):
     """Information about a medication that is used to support knowledge."""
     resourceType: Literal_['MedicationKnowledge'] = 'MedicationKnowledge'
     'Definition of Medication Knowledge'
@@ -20195,7 +20193,7 @@ class MedicationRequestSubstitution(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class MedicationRequest(BaseModel):
+class MedicationRequest(AnyResource, BaseModel):
     """An order or request for both supply of the medication and the instructions for administration of the medication to a patient. The resource is called "MedicationRequest" rather than "MedicationPrescription" or "MedicationOrder" to generalize the use across inpatient and outpatient settings, including care plans, etc., and to harmonize with workflow patterns."""
     resourceType: Literal_['MedicationRequest'] = 'MedicationRequest'
     'Ordering of medication for patient or group'
@@ -20321,7 +20319,7 @@ class MedicationStatementAdherence(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class MedicationStatement(BaseModel):
+class MedicationStatement(AnyResource, BaseModel):
     """A record of a medication that is being consumed by a patient.   A MedicationStatement may indicate that the patient may be taking the medication now or has taken the medication in the past or will be taking the medication in the future.  The source of this information can be the patient, significant other (such as a family member or spouse), or a clinician.  A common scenario where this information is captured is during the history taking process during a patient visit or stay.   The medication information may come from sources such as the patient's memory, from a prescription bottle,  or from a list of medications the patient, clinician or other party maintains. 
 
 The primary difference between a medicationstatement and a medicationadministration is that the medication administration has complete administration information and is based on actual administration information from the person who administered the medication.  A medicationstatement is often, if not always, less specific.  There is no required date/time when the medication was administered, in fact we only know that a source has reported the patient is taking this medication, where details such as time, quantity, or rate or even medication product may be incomplete or missing or less precise.  As stated earlier, the Medication Statement information may come from the patient's memory, from a prescription bottle or from a list of medications the patient, clinician or other party maintains.  Medication administration is more formal and is not missing detailed information.
@@ -20545,7 +20543,7 @@ class MedicinalProductDefinitionNamePart(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class MedicinalProductDefinition(BaseModel):
+class MedicinalProductDefinition(AnyResource, BaseModel):
     """A medicinal product, being a substance or combination of substances that is intended to treat, prevent or diagnose a disease, or to restore, correct or modify physiological functions by exerting a pharmacological, immunological or metabolic action. This resource is intended to define and detail such products and their properties, for uses other than direct patient care (e.g. regulatory use, or drug catalogs)."""
     resourceType: Literal_['MedicinalProductDefinition'] = 'MedicinalProductDefinition'
     'Detailed definition of a medicinal product'
@@ -20687,7 +20685,7 @@ class MessageDefinitionFocus(BaseModel):
     'The kind of resource that must be the focus for this message.'
 
 
-class MessageDefinition(BaseModel):
+class MessageDefinition(AnyResource, BaseModel):
     """Defines the characteristics of a message that can be shared between systems, including the type of event that initiates the message, the content to be transmitted and what response(s), if any, are permitted."""
     resourceType: Literal_['MessageDefinition'] = 'MessageDefinition'
     'A resource that defines a type of message that can be exchanged between systems'
@@ -20889,7 +20887,7 @@ class MessageHeaderSource(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class MessageHeader(BaseModel):
+class MessageHeader(AnyResource, BaseModel):
     """The header for a message exchange that is either requesting or responding to an action.  The reference(s) that are the subject of the action as well as other information related to the action are typically transmitted in a bundle in which the MessageHeader resource instance is the first resource in the bundle."""
     resourceType: Literal_['MessageHeader'] = 'MessageHeader'
     'A resource that describes a message that is exchanged between systems'
@@ -20943,7 +20941,7 @@ class MessageHeader(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the resource and that modifies the understanding of the element that contains it and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer is allowed to define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class MetadataResource(BaseModel):
+class MetadataResource(AnyResource, BaseModel):
     """Common Interface declaration for conformance and knowledge artifact resources."""
     resourceType: Literal_['MetadataResource'] = 'MetadataResource'
     'Common Interface declaration for definitional resources'
@@ -21147,7 +21145,7 @@ class MolecularSequenceRelativeEdit(BaseModel):
     'Allele that was observed. Nucleotide(s)/amino acids from start position of sequence to stop position of sequence on the positive (+) strand of the observed sequence. When the sequence type is DNA, it should be the sequence on the positive (+) strand. This will lay in the range between variant.start and variant.end.'
 
 
-class MolecularSequence(BaseModel):
+class MolecularSequence(AnyResource, BaseModel):
     """Representation of a molecular sequence."""
     resourceType: Literal_['MolecularSequence'] = 'MolecularSequence'
     'Representation of a molecular sequence'
@@ -21233,7 +21231,7 @@ class NamingSystemUniqueId(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class NamingSystem(BaseModel):
+class NamingSystem(AnyResource, BaseModel):
     """A curated namespace that issues unique symbols within that namespace for the identification of concepts, people, devices, etc.  Represents a "System" used within the Identifier and Coding data types."""
     resourceType: Literal_['NamingSystem'] = 'NamingSystem'
     'System of unique identification'
@@ -21421,7 +21419,7 @@ class NutritionIntakePerformer(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class NutritionIntake(BaseModel):
+class NutritionIntake(AnyResource, BaseModel):
     """A record of food or fluid that is being consumed by a patient.   A NutritionIntake may indicate that the patient may be consuming the food or fluid now or has consumed the food or fluid in the past.  The source of this information can be the patient, significant other (such as a family member or spouse), or a clinician.  A common scenario where this information is captured is during the history taking process during a patient visit or stay or through an app that tracks food or fluids consumed.   The consumption information may come from sources such as the patient's memory, from a nutrition label,  or from a clinician documenting observed intake."""
     resourceType: Literal_['NutritionIntake'] = 'NutritionIntake'
     'Record of food or fluid being taken by a patient'
@@ -21723,7 +21721,7 @@ class NutritionOrderOralDietTexture(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class NutritionOrder(BaseModel):
+class NutritionOrder(AnyResource, BaseModel):
     """A request to supply a diet, formula feeding (enteral) or oral nutritional supplement to a patient/resident."""
     resourceType: Literal_['NutritionOrder'] = 'NutritionOrder'
     'Diet, formula or nutritional supplement request'
@@ -21911,7 +21909,7 @@ class NutritionProductNutrient(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class NutritionProduct(BaseModel):
+class NutritionProduct(AnyResource, BaseModel):
     """A food or supplement that is consumed by patients."""
     resourceType: Literal_['NutritionProduct'] = 'NutritionProduct'
     'A product used for nutritional purposes (i.e. food or supplement)'
@@ -22067,7 +22065,7 @@ class ObservationComponent(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class Observation(BaseModel):
+class Observation(AnyResource, BaseModel):
     """Measurements and simple assertions made about a patient, device or other subject."""
     resourceType: Literal_['Observation'] = 'Observation'
     'Measurements and simple assertions'
@@ -22273,7 +22271,7 @@ class ObservationDefinitionComponent(BaseModel):
     'Describes what will be observed.'
 
 
-class ObservationDefinition(BaseModel):
+class ObservationDefinition(AnyResource, BaseModel):
     """Set of definitional characteristics for a kind of observation or measurement produced or consumed by an orderable health care service."""
     resourceType: Literal_['ObservationDefinition'] = 'ObservationDefinition'
     'Definition of an observation'
@@ -22535,7 +22533,7 @@ class OperationDefinitionOverload(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class OperationDefinition(BaseModel):
+class OperationDefinition(AnyResource, BaseModel):
     """A formal computable definition of an operation (on the RESTful interface) or a named query (using the search interaction)."""
     resourceType: Literal_['OperationDefinition'] = 'OperationDefinition'
     'Definition of an operation or a named query'
@@ -22707,7 +22705,7 @@ class OperationOutcomeIssue(BaseModel):
     'Describes the type of the issue. The system that creates an OperationOutcome SHALL choose the most applicable code from the IssueType value set, and may additional provide its own code for the error in the details element.'
 
 
-class OperationOutcome(BaseModel):
+class OperationOutcome(AnyResource, BaseModel):
     """A collection of error, warning, or information messages that result from a system action."""
     resourceType: Literal_['OperationOutcome'] = 'OperationOutcome'
     'Information about the success/failure of an action'
@@ -22757,7 +22755,7 @@ class OrganizationQualification(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class Organization(BaseModel):
+class Organization(AnyResource, BaseModel):
     """A formally or informally recognized grouping of people or organizations formed for the purpose of achieving some form of collective action.  Includes companies, institutions, corporations, departments, community groups, healthcare practice groups, payer/insurer, etc."""
     resourceType: Literal_['Organization'] = 'Organization'
     'A grouping of people or organizations with a common purpose'
@@ -22813,7 +22811,7 @@ class Organization(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the resource and that modifies the understanding of the element that contains it and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer is allowed to define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class OrganizationAffiliation(BaseModel):
+class OrganizationAffiliation(AnyResource, BaseModel):
     """Defines an affiliation/association/relationship between 2 distinct organizations, that is not a part-of relationship/sub-division relationship."""
     resourceType: Literal_['OrganizationAffiliation'] = 'OrganizationAffiliation'
     'Defines an affiliation/association/relationship between 2 distinct organizations, that is not a part-of relationship/sub-division relationship'
@@ -22965,7 +22963,7 @@ class PackagedProductDefinitionPackagingProperty(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class PackagedProductDefinition(BaseModel):
+class PackagedProductDefinition(AnyResource, BaseModel):
     """A medically related item or items, in a container or package."""
     resourceType: Literal_['PackagedProductDefinition'] = 'PackagedProductDefinition'
     'A medically related item or items, in a container or package'
@@ -23199,7 +23197,7 @@ class ParametersParameter(BaseModel):
     'Unique id for the element within a resource (for internal references). This may be any string value that does not contain spaces.'
 
 
-class Parameters(BaseModel):
+class Parameters(AnyResource, BaseModel):
     """This resource is used to pass information into and back from an operation (whether invoked directly from REST or within a messaging environment).  It is not persisted or allowed to be referenced by other resources."""
     resourceType: Literal_['Parameters'] = 'Parameters'
     'Operation Request or Response'
@@ -23285,7 +23283,7 @@ class PatientLink(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class Patient(BaseModel):
+class Patient(AnyResource, BaseModel):
     """Demographics and other administrative information about an individual or animal receiving care or other health-related services."""
     resourceType: Literal_['Patient'] = 'Patient'
     'Information about an individual or animal receiving health care services'
@@ -23363,7 +23361,7 @@ class Patient(BaseModel):
     'Organization that is the custodian of the patient record.'
 
 
-class PaymentNotice(BaseModel):
+class PaymentNotice(AnyResource, BaseModel):
     """This resource provides the status of the payment for goods and services rendered, and the request and response resource references."""
     resourceType: Literal_['PaymentNotice'] = 'PaymentNotice'
     'PaymentNotice request'
@@ -23489,7 +23487,7 @@ class PaymentReconciliationAllocation(BaseModel):
     'The date from the response resource containing a commitment to pay.'
 
 
-class PaymentReconciliation(BaseModel):
+class PaymentReconciliation(AnyResource, BaseModel):
     """This resource provides the details including amount of a payment and allocates the payment items being paid."""
     resourceType: Literal_['PaymentReconciliation'] = 'PaymentReconciliation'
     'PaymentReconciliation resource'
@@ -23691,7 +23689,7 @@ class PermissionRuleDataResource(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class Permission(BaseModel):
+class Permission(AnyResource, BaseModel):
     """Permission resource holds access rules for a given data and context."""
     resourceType: Literal_['Permission'] = 'Permission'
     'Access Rules'
@@ -23775,7 +23773,7 @@ class PersonLink(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class Person(BaseModel):
+class Person(AnyResource, BaseModel):
     """Demographics and administrative information about a person independent of a specific health-related context."""
     resourceType: Literal_['Person'] = 'Person'
     'A generic person record'
@@ -24201,7 +24199,7 @@ class PlanDefinitionGoalTarget(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class PlanDefinition(BaseModel):
+class PlanDefinition(AnyResource, BaseModel):
     """This resource allows for the definition of various types of plans as a sharable, consumable, and executable artifact. The resource is general enough to support the description of a broad range of clinical and non-clinical artifacts such as clinical decision support rules, order sets, protocols, and drug quality specifications."""
     resourceType: Literal_['PlanDefinition'] = 'PlanDefinition'
     'The definition of a plan for a series of actions, independent of any specific patient or context'
@@ -24385,7 +24383,7 @@ class PractitionerQualification(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class Practitioner(BaseModel):
+class Practitioner(AnyResource, BaseModel):
     """A person who is directly or indirectly involved in the provisioning of healthcare or related services."""
     resourceType: Literal_['Practitioner'] = 'Practitioner'
     'A person with a  formal responsibility in the provisioning of healthcare or related services'
@@ -24447,7 +24445,7 @@ class Practitioner(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the resource and that modifies the understanding of the element that contains it and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer is allowed to define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class PractitionerRole(BaseModel):
+class PractitionerRole(AnyResource, BaseModel):
     """A specific set of Roles/Locations/specialties/services that a practitioner may perform at an organization for a period of time."""
     resourceType: Literal_['PractitionerRole'] = 'PractitionerRole'
     'Roles/organizations the practitioner is associated with'
@@ -24541,7 +24539,7 @@ class ProcedurePerformer(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class Procedure(BaseModel):
+class Procedure(AnyResource, BaseModel):
     """An action that is or was performed on or for a patient, practitioner, device, organization, or location. For example, this can be a physical intervention on a patient like an operation, or less invasive like long term services, counseling, or hypnotherapy.  This can be a quality or safety inspection for a location, organization, or device.  This can be an accreditation procedure on a practitioner for licensing."""
     resourceType: Literal_['Procedure'] = 'Procedure'
     'An action that is being or was performed on an individual or entity'
@@ -24691,7 +24689,7 @@ class ProvenanceAgent(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class Provenance(BaseModel):
+class Provenance(AnyResource, BaseModel):
     """Provenance of a resource is a record that describes entities and processes involved in producing and delivering or otherwise influencing that resource. Provenance provides a critical foundation for assessing authenticity, enabling trust, and allowing reproducibility. Provenance assertions are a form of contextual metadata and can themselves become important records with their own provenance. Provenance statement indicates clinical significance in terms of confidence in authenticity, reliability, and trustworthiness, integrity, and stage in lifecycle (e.g. Document Completion - has the artifact been legally authenticated), all of which may impact security, privacy, and trust policies."""
     resourceType: Literal_['Provenance'] = 'Provenance'
     'Who, What, When for a set of resources'
@@ -24969,7 +24967,7 @@ class QuestionnaireItemInitial(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class Questionnaire(BaseModel):
+class Questionnaire(AnyResource, BaseModel):
     """A structured set of questions intended to guide the collection of answers from end-users. Questionnaires provide detailed control over order, presentation, phraseology and grouping to allow coherent, consistent data collection."""
     resourceType: Literal_['Questionnaire'] = 'Questionnaire'
     'A structured set of questions'
@@ -25163,7 +25161,7 @@ class QuestionnaireResponseItemAnswer(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class QuestionnaireResponse(BaseModel):
+class QuestionnaireResponse(AnyResource, BaseModel):
     """A structured set of questions and their answers. The questions are ordered and grouped into coherent subsets, corresponding to the structure of the grouping of the questionnaire being responded to."""
     resourceType: Literal_['QuestionnaireResponse'] = 'QuestionnaireResponse'
     'A structured set of questions and their answers'
@@ -25245,7 +25243,7 @@ class RegulatedAuthorizationCase(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class RegulatedAuthorization(BaseModel):
+class RegulatedAuthorization(AnyResource, BaseModel):
     """Regulatory approval, clearance or licencing related to a regulated product, treatment, facility or activity that is cited in a guidance, regulation, rule or legislative act. An example is Market Authorization relating to a Medicinal Product."""
     resourceType: Literal_['RegulatedAuthorization'] = 'RegulatedAuthorization'
     'Regulatory approval, clearance or licencing related to a regulated product, treatment, facility or activity e.g. Market Authorization for a Medicinal Product'
@@ -25325,7 +25323,7 @@ class RelatedPersonCommunication(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class RelatedPerson(BaseModel):
+class RelatedPerson(AnyResource, BaseModel):
     """Information about a person that is involved in a patient's health or the care for a patient, but who is not the target of healthcare, nor has a formal responsibility in the care process."""
     resourceType: Literal_['RelatedPerson'] = 'RelatedPerson'
     'A person that is related to a patient, but who is not a direct target of care'
@@ -25631,7 +25629,7 @@ class RequestOrchestrationActionInput(BaseModel):
     'Unique id for the element within a resource (for internal references). This may be any string value that does not contain spaces.'
 
 
-class RequestOrchestration(BaseModel):
+class RequestOrchestration(AnyResource, BaseModel):
     """A set of related requests that can be used to capture intended activities that have inter-dependencies such as "give this medication after that one"."""
     resourceType: Literal_['RequestOrchestration'] = 'RequestOrchestration'
     'A set of related requests'
@@ -25757,7 +25755,7 @@ class RequirementsStatement(BaseModel):
     'Unique id for the element within a resource (for internal references). This may be any string value that does not contain spaces.'
 
 
-class Requirements(BaseModel):
+class Requirements(AnyResource, BaseModel):
     """A set of requirements - a list of features or behaviors of designed systems that are necessary to achieve organizational or regulatory goals."""
     resourceType: Literal_['Requirements'] = 'Requirements'
     'A set of requirements - features of systems that are necessary'
@@ -26023,7 +26021,7 @@ class ResearchStudyLabel(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class ResearchStudy(BaseModel):
+class ResearchStudy(AnyResource, BaseModel):
     """A scientific study of nature that sometimes includes processes involved in health and disease. For example, clinical trials are research studies that involve people. These studies may be related to new ways to screen, prevent, diagnose, and treat disease. They may also study certain outcomes and certain groups of people by looking at data collected in the past or future."""
     resourceType: Literal_['ResearchStudy'] = 'ResearchStudy'
     'Investigation to increase healthcare-related patient-independent knowledge'
@@ -26159,7 +26157,7 @@ class ResearchSubjectProgress(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class ResearchSubject(BaseModel):
+class ResearchSubject(AnyResource, BaseModel):
     """A ResearchSubject is a participant or object which is the recipient of investigative activities in a research study."""
     resourceType: Literal_['ResearchSubject'] = 'ResearchSubject'
     'Participant or object which is the recipient of investigative activities in a study'
@@ -26245,7 +26243,7 @@ class RiskAssessmentPrediction(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class RiskAssessment(BaseModel):
+class RiskAssessment(AnyResource, BaseModel):
     """An assessment of the likely outcome(s) for a patient or other subject as well as the likelihood of each outcome."""
     resourceType: Literal_['RiskAssessment'] = 'RiskAssessment'
     'Potential outcomes for a subject with likelihood'
@@ -26313,7 +26311,7 @@ class RiskAssessment(BaseModel):
     'The type of the risk assessment performed.'
 
 
-class Schedule(BaseModel):
+class Schedule(AnyResource, BaseModel):
     """A container for slots of time that may be available for booking appointments."""
     resourceType: Literal_['Schedule'] = 'Schedule'
     'A container for slots of time that may be available for booking appointments'
@@ -26385,7 +26383,7 @@ class SearchParameterComponent(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class SearchParameter(BaseModel):
+class SearchParameter(AnyResource, BaseModel):
     """A search parameter that defines a named search item that can be used to search/filter on a resource."""
     resourceType: Literal_['SearchParameter'] = 'SearchParameter'
     'Search parameter for a resource'
@@ -26595,7 +26593,7 @@ class ServiceRequestOrderDetailParameter(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class ServiceRequest(BaseModel):
+class ServiceRequest(AnyResource, BaseModel):
     """A record of a request for service such as diagnostic investigations, treatments, or operations to be performed."""
     resourceType: Literal_['ServiceRequest'] = 'ServiceRequest'
     'A request for a service to be performed'
@@ -26717,7 +26715,7 @@ class ServiceRequest(BaseModel):
     'A code or reference that identifies a particular service (i.e., procedure, diagnostic investigation, or panel of investigations) that have been requested.'
 
 
-class Slot(BaseModel):
+class Slot(AnyResource, BaseModel):
     """A slot of time on a schedule that may be available for booking appointments."""
     resourceType: Literal_['Slot'] = 'Slot'
     'A slot of time on a schedule that may be available for booking appointments'
@@ -26875,7 +26873,7 @@ class SpecimenFeature(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class Specimen(BaseModel):
+class Specimen(AnyResource, BaseModel):
     """A sample to be used for analysis."""
     resourceType: Literal_['Specimen'] = 'Specimen'
     'Sample for analysis'
@@ -27055,7 +27053,7 @@ class SpecimenDefinitionTypeTestedHandling(BaseModel):
     'It qualifies the interval of temperature, which characterizes an occurrence of handling. Conditions that are not related to temperature may be handled in the instruction element.'
 
 
-class SpecimenDefinition(BaseModel):
+class SpecimenDefinition(AnyResource, BaseModel):
     """A kind of specimen with associated set of requirements."""
     resourceType: Literal_['SpecimenDefinition'] = 'SpecimenDefinition'
     'Kind of specimen'
@@ -27255,7 +27253,7 @@ class StructureDefinitionMapping(BaseModel):
     'An absolute URI that identifies the specification that this mapping is expressed to.'
 
 
-class StructureDefinition(BaseModel):
+class StructureDefinition(AnyResource, BaseModel):
     """A definition of a FHIR structure. This resource is used to describe the underlying resources, data types defined in FHIR, and also for describing extensions and constraints on resources and data types."""
     resourceType: Literal_['StructureDefinition'] = 'StructureDefinition'
     'Structural Definition'
@@ -27675,7 +27673,7 @@ class StructureMapConst(BaseModel):
     'Unique id for the element within a resource (for internal references). This may be any string value that does not contain spaces.'
 
 
-class StructureMap(BaseModel):
+class StructureMap(AnyResource, BaseModel):
     """A Map of relationships between 2 structures that can be used to transform data."""
     resourceType: Literal_['StructureMap'] = 'StructureMap'
     'A Map of relationships between 2 structures that can be used to transform data'
@@ -27827,7 +27825,7 @@ class SubscriptionFilterBy(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class Subscription(BaseModel):
+class Subscription(AnyResource, BaseModel):
     """The subscription resource describes a particular client's request to be notified about a SubscriptionTopic."""
     resourceType: Literal_['Subscription'] = 'Subscription'
     'Notification about a SubscriptionTopic'
@@ -27935,7 +27933,7 @@ class SubscriptionStatusNotificationEvent(BaseModel):
     'Additional context information for this event. Generally, this will contain references to additional resources included with the event (e.g., the Patient relevant to an Encounter), however it MAY refer to non-FHIR objects.'
 
 
-class SubscriptionStatus(BaseModel):
+class SubscriptionStatus(AnyResource, BaseModel):
     """The SubscriptionStatus resource describes the state of a Subscription during notifications."""
     resourceType: Literal_['SubscriptionStatus'] = 'SubscriptionStatus'
     'Status information about a Subscription provided during event notification'
@@ -28129,7 +28127,7 @@ class SubscriptionTopicCanFilterBy(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class SubscriptionTopic(BaseModel):
+class SubscriptionTopic(AnyResource, BaseModel):
     """Describes a stream of resource state changes or events and annotated with labels useful to filter projections from this topic."""
     resourceType: Literal_['SubscriptionTopic'] = 'SubscriptionTopic'
     'The definition of a specific topic for triggering events within the Subscriptions framework'
@@ -28259,7 +28257,7 @@ class SubstanceIngredient(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class Substance(BaseModel):
+class Substance(AnyResource, BaseModel):
     """A homogeneous material with a definite composition."""
     resourceType: Literal_['Substance'] = 'Substance'
     'A homogeneous material with a definite composition'
@@ -28611,7 +28609,7 @@ class SubstanceDefinitionCode(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class SubstanceDefinition(BaseModel):
+class SubstanceDefinition(AnyResource, BaseModel):
     """The detailed description of a substance, typically at a level beyond what is used for prescribing."""
     resourceType: Literal_['SubstanceDefinition'] = 'SubstanceDefinition'
     'The detailed description of a substance, typically at a level beyond what is used for prescribing'
@@ -28773,7 +28771,7 @@ class SubstanceNucleicAcidSubunitSugar(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class SubstanceNucleicAcid(BaseModel):
+class SubstanceNucleicAcid(AnyResource, BaseModel):
     """Nucleic acids are defined by three distinct elements: the base, sugar and linkage. Individual substance/moiety IDs will be created for each of these elements. The nucleotide sequence will be always entered in the 5’-3’ direction."""
     resourceType: Literal_['SubstanceNucleicAcid'] = 'SubstanceNucleicAcid'
     'Nucleic acids are defined by three distinct elements: the base, sugar and linkage. Individual substance/moiety IDs will be created for each of these elements. The nucleotide sequence will be always entered in the 5’-3’ direction'
@@ -28947,7 +28945,7 @@ class SubstancePolymerRepeatRepeatUnitDegreeOfPolymerisation(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class SubstancePolymer(BaseModel):
+class SubstancePolymer(AnyResource, BaseModel):
     """Properties of a substance specific to it being a polymer."""
     resourceType: Literal_['SubstancePolymer'] = 'SubstancePolymer'
     'Properties of a substance specific to it being a polymer'
@@ -29029,7 +29027,7 @@ class SubstanceProteinSubunit(BaseModel):
     'Unique identifier for molecular fragment modification based on the ISO 11238 Substance ID.'
 
 
-class SubstanceProtein(BaseModel):
+class SubstanceProtein(AnyResource, BaseModel):
     """A SubstanceProtein is defined as a single unit of a linear amino acid sequence, or a combination of subunits that are either covalently linked or have a defined invariant stoichiometric relationship. This includes all synthetic, recombinant and purified SubstanceProteins of defined sequence, whether the use is therapeutic or prophylactic. This set of elements will be used to describe albumins, coagulation factors, cytokines, growth factors, peptide/SubstanceProtein hormones, enzymes, toxins, toxoids, recombinant vaccines, and immunomodulators."""
     resourceType: Literal_['SubstanceProtein'] = 'SubstanceProtein'
     'A SubstanceProtein is defined as a single unit of a linear amino acid sequence, or a combination of subunits that are either covalently linked or have a defined invariant stoichiometric relationship. This includes all synthetic, recombinant and purified SubstanceProteins of defined sequence, whether the use is therapeutic or prophylactic. This set of elements will be used to describe albumins, coagulation factors, cytokines, growth factors, peptide/SubstanceProtein hormones, enzymes, toxins, toxoids, recombinant vaccines, and immunomodulators'
@@ -29139,7 +29137,7 @@ class SubstanceReferenceInformationGene(BaseModel):
     'Todo.'
 
 
-class SubstanceReferenceInformation(BaseModel):
+class SubstanceReferenceInformation(AnyResource, BaseModel):
     """Todo."""
     resourceType: Literal_['SubstanceReferenceInformation'] = 'SubstanceReferenceInformation'
     'Todo'
@@ -29309,7 +29307,7 @@ class SubstanceSourceMaterialOrganismAuthor(BaseModel):
     'The author of an organism species shall be specified. The author year of an organism shall also be specified when applicable; refers to the year in which the first author(s) published the infraspecific plant/animal name (of any rank).'
 
 
-class SubstanceSourceMaterial(BaseModel):
+class SubstanceSourceMaterial(AnyResource, BaseModel):
     """Source material shall capture information on the taxonomic and anatomical origins as well as the fraction of a material that can result in or can be modified to form a substance. This set of data elements shall be used to define polymer substances isolated from biological matrices. Taxonomic and anatomical origins shall be described using a controlled vocabulary as required. This information is captured for naturally derived polymers ( . starch) and structurally diverse substances. For Organisms belonging to the Kingdom Plantae the Substance level defines the fresh material of a single species or infraspecies, the Herbal Drug and the Herbal preparation. For Herbal preparations, the fraction information will be captured at the Substance information level and additional information for herbal extracts will be captured at the Specified Substance Group 1 information level. See for further explanation the Substance Class: Structurally Diverse and the herbal annex."""
     resourceType: Literal_['SubstanceSourceMaterial'] = 'SubstanceSourceMaterial'
     'Source material shall capture information on the taxonomic and anatomical origins as well as the fraction of a material that can result in or can be modified to form a substance. This set of data elements shall be used to define polymer substances isolated from biological matrices. Taxonomic and anatomical origins shall be described using a controlled vocabulary as required. This information is captured for naturally derived polymers ( . starch) and structurally diverse substances. For Organisms belonging to the Kingdom Plantae the Substance level defines the fresh material of a single species or infraspecies, the Herbal Drug and the Herbal preparation. For Herbal preparations, the fraction information will be captured at the Substance information level and additional information for herbal extracts will be captured at the Specified Substance Group 1 information level. See for further explanation the Substance Class: Structurally Diverse and the herbal annex'
@@ -29387,7 +29385,7 @@ class SupplyDeliverySuppliedItem(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class SupplyDelivery(BaseModel):
+class SupplyDelivery(AnyResource, BaseModel):
     """Record of delivery of what is supplied."""
     resourceType: Literal_['SupplyDelivery'] = 'SupplyDelivery'
     'Delivery of bulk Supplies'
@@ -29469,7 +29467,7 @@ class SupplyRequestParameter(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class SupplyRequest(BaseModel):
+class SupplyRequest(AnyResource, BaseModel):
     """A record of a request to deliver a medication, substance or device used in the healthcare setting to a particular destination for a particular person or organization."""
     resourceType: Literal_['SupplyRequest'] = 'SupplyRequest'
     'Request for a medication, substance or device'
@@ -29901,7 +29899,7 @@ class TaskInput(BaseModel):
     'Unique id for the element within a resource (for internal references). This may be any string value that does not contain spaces.'
 
 
-class Task(BaseModel):
+class Task(AnyResource, BaseModel):
     """A task to be performed."""
     resourceType: Literal_['Task'] = 'Task'
     'A task to be performed'
@@ -30231,7 +30229,7 @@ class TerminologyCapabilitiesClosure(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class TerminologyCapabilities(BaseModel):
+class TerminologyCapabilities(AnyResource, BaseModel):
     """A TerminologyCapabilities resource documents a set of capabilities (behaviors) of a FHIR Terminology Server that may be used as a statement of actual server functionality or a statement of required or desired server implementation."""
     resourceType: Literal_['TerminologyCapabilities'] = 'TerminologyCapabilities'
     'A statement of system capabilities'
@@ -30487,7 +30485,7 @@ class TestPlanTestCaseTestRunScript(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class TestPlan(BaseModel):
+class TestPlan(AnyResource, BaseModel):
     """A plan for executing testing on an artifact or specifications."""
     resourceType: Literal_['TestPlan'] = 'TestPlan'
     'Description of intented testing'
@@ -30783,7 +30781,7 @@ class TestReportTestAction(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class TestReport(BaseModel):
+class TestReport(AnyResource, BaseModel):
     """A summary of information based on the results of executing a TestScript."""
     resourceType: Literal_['TestReport'] = 'TestReport'
     'Describes the results of a TestScript execution'
@@ -31377,7 +31375,7 @@ class TestScriptTestAction(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class TestScript(BaseModel):
+class TestScript(AnyResource, BaseModel):
     """A structured set of tests against a FHIR server or client implementation to determine compliance against the FHIR specification."""
     resourceType: Literal_['TestScript'] = 'TestScript'
     'Describes a set of tests'
@@ -31833,7 +31831,7 @@ class TransportInput(BaseModel):
     'Unique id for the element within a resource (for internal references). This may be any string value that does not contain spaces.'
 
 
-class Transport(BaseModel):
+class Transport(AnyResource, BaseModel):
     """Record of transport of item."""
     resourceType: Literal_['Transport'] = 'Transport'
     'Delivery of item'
@@ -32323,7 +32321,7 @@ class ValueSetScope(BaseModel):
     'Criteria describing which concepts or codes should be excluded and why.'
 
 
-class ValueSet(BaseModel):
+class ValueSet(AnyResource, BaseModel):
     """A ValueSet resource instance specifies a set of codes drawn from one or more code systems, intended for use in a particular context. Value sets link between [CodeSystem](codesystem.html) definitions and their use in [coded elements](terminologies.html)."""
     resourceType: Literal_['ValueSet'] = 'ValueSet'
     'A set of codes drawn from one or more code systems'
@@ -32527,7 +32525,7 @@ class VerificationResultValidator(BaseModel):
     'Signed assertion by the validator that they have validated the information.'
 
 
-class VerificationResult(BaseModel):
+class VerificationResult(AnyResource, BaseModel):
     """Describes validation requirements, source(s), status and dates for one or more elements."""
     resourceType: Literal_['VerificationResult'] = 'VerificationResult'
     'Describes validation requirements, source(s), status and dates for one or more elements'
@@ -32673,7 +32671,7 @@ class VisionPrescriptionLensSpecificationPrism(BaseModel):
     "May be used to represent additional information that is not part of the basic definition of the element and that modifies the understanding of the element in which it is contained and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and managable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself)."
 
 
-class VisionPrescription(BaseModel):
+class VisionPrescription(AnyResource, BaseModel):
     """An authorization for the provision of glasses and/or contact lenses to a patient."""
     resourceType: Literal_['VisionPrescription'] = 'VisionPrescription'
     'Prescription for vision correction products for a patient'
